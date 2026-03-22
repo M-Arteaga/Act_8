@@ -1,0 +1,41 @@
+﻿@page "/CambioMoneda"
+@rendermode InteractiveServer
+
+<h3>Cambio de Moneda</h3>
+
+<div class="container">
+    <div class="mb-3">
+        <label class="form-label">Pesos:</label>
+        <input class="form-control" @bind="Pesos" />
+        <button class="btn btn-primary mt-3" @onclick="Convertir">Convertir</button>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dólares:</label>
+        <input class="form-control" value="@Dolares" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Euros:</label>
+        <input class="form-control" value="@Euros" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Libras:</label>
+        <input class="form-control" value="@Libras" disabled />
+    </div>
+</div>
+
+@code {
+    public decimal Pesos { get; set; }
+    public decimal Dolares { get; set; }
+    public decimal Euros { get; set; }
+    public decimal Libras { get; set; }
+
+    void Convertir()
+    {
+        Dolares = Pesos * 0.056m;
+        Euros = Pesos * 0.048m;
+        Libras = Pesos * 0.042m;
+    }
+}

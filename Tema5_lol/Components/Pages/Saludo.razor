@@ -1,0 +1,35 @@
+﻿@page "/Saludo"
+@rendermode InteractiveServer
+
+<h3>Saludo</h3>
+<div class="alert alert-success">
+    @_letrero
+</div>
+
+<div class="alert alert-info">
+    @ChildContent
+</div>
+
+<div class="container">
+    <div class="row align-items-center">
+
+    </div>
+    <label class="col-form-label">Nombre: </label>
+    <input id="txtNombre" class="form-control" @bind="Letrero"/>
+</div>
+
+<button class="btn btn-primary mt-3" @onclick="Saludar">Saludar</button>
+
+@code {
+    [Parameter]
+    public string Letrero { get; set; } = "¡Cambio de contenido!";
+    private string _letrero = "!Hola mundo!";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    void Saludar()
+    {
+        _letrero = "¡Hola " + Letrero + "!";
+    }
+}
