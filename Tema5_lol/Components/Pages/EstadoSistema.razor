@@ -1,0 +1,23 @@
+﻿@page "/EstadoSistema"
+
+@if (CodigoEstado == 200)
+{
+    <div class="alert alert-success mt-3">Sistema Operacional</div>
+}
+else if (CodigoEstado == 404)
+{
+    <div class="alert alert-warning mt-3">Recurso No Encontrado</div>
+}
+else if (CodigoEstado == 500)
+{
+    <div class="alert alert-danger mt-3">Error Interno del Servidor</div>
+}
+else
+{
+    <div class="alert alert-secondary mt-3">Estado Desconocido</div>
+}
+
+@code {
+    [Parameter]
+    public int CodigoEstado { get; set; }
+}
