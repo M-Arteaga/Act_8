@@ -1,0 +1,47 @@
+﻿@page "/NumDias"
+@rendermode InteractiveServer
+
+<h3>Conocer los días del mes</h3>
+
+<label for="txtMes" class="col-form-label">Mes: </label>
+<input id="txtMes" type="number" class="form-control" @bind="mes"/>
+
+<label for="txtAnio" class="col-form-label">Año: </label>
+<input id="txtAnio" type="number" class="form-control" @bind="anio" />
+
+<button class="btn btn-primary mt-3" @onclick="CalcularDias">Calcular</button><br />
+
+@if(_mostrarResultado)
+{
+    <br /><h1>@Letrero</h1>
+}
+
+@code {
+    public int mes { get; set; }
+    public int anio { get; set; }
+    public string Letrero = "";
+    private Boolean _mostrarResultado = false;
+
+    void CalcularDias()
+    {
+        if(mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)
+        {
+            Letrero = $"El mes {mes} del año {anio} tiene 31 días";
+        } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
+        {
+            Letrero = $"El mes {mes} del año {anio} tiene 30 días";
+        }else
+        {
+            if((anio%4 == 0 && anio%100 != 0) || anio%400 == 0)
+            {
+                Letrero = $"El mes {mes} del año {anio} tiene 29 días";
+            } else
+            {
+                Letrero = $"El mes {mes} del año {anio} tiene 28 días";
+            }
+        }
+
+        _mostrarResultado = true;
+    }
+
+}
