@@ -1,0 +1,144 @@
+﻿@page "/Ciclos"
+@rendermode InteractiveServer
+
+<h3>Ciclos</h3>
+<div class="container">
+    <div class="row mt-3 align-items-center">
+        <div class="col-2">
+            <label for="txtCalificacion" class="col-form-label">Calificacion:</label>
+        </div>
+        <div class="col-10">
+            <input type="number" id="txtCalificacion" class="form-control" @bind="_valorCiclo" />
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary mt-3" @onclick="Guardar">Guardar</button> 
+<button class="btn btn-primary mt-3" @onclick="Eliminar">Eliminar</button>
+<button class="btn btn-primary mt-3" @onclick="Existe">Existe</button>
+<button class="btn btn-primary mt-3" @onclick="Limpiar">Limpiar</button>
+
+<hr />
+Calificaciones guardadas:@_calificaciones.Count 
+<br />
+
+@* recorre toda la colección, leyéndolos y comparando con su valor *@
+Calificaciones guardadas con 9:@_calificaciones.Count(r => r == 9) <br />
+<br />
+
+Encontrado en: @_indice
+
+@_mostrar
+
+@if (_calificaciones.Count > 0) {
+    <ul class="mt-3">
+    @* @for(var indice=0; indice <_calificaciones.Count; indice++)
+    {
+        <li>@_calificaciones[indice]</li>
+    }
+    </ul> *@
+
+    @* @foreach (var calificacion in _calificaciones)
+    {
+        <li>@calificacion</li>
+    } *@
+
+    @* calif aprobatorias *@
+    @* @foreach (var calificacion in _calificaciones.Where(c => c > 5))
+    {
+        <li>@calificacion</li>
+        }
+    </ul> *@
+
+    @* generar nueva colección de datos con esa restricción *@
+    @foreach (var calificacion in _calificaciones.OrderBy(c => c))
+    {
+       <li>@calificacion</li>
+    }
+    </ul>
+
+    <ul>
+        @foreach (var calificacion in _calificaciones.Skip(2).Take(2))
+        {
+            <li>@calificacion</li>
+        }
+    </ul>
+}
+
+<hr />
+
+@* <ul class="mt-3">
+    @while (_indice < _valorCiclo)
+    {
+        <li>Valor del cliclo: @_indice</li>
+        _indice++;
+    }
+</ul> *@
+
+@* renderizar contenido *@
+@((MarkupString)_letrero)
+
+@code {
+    private int _valorCiclo, _indice;
+    private bool _mostrar = false;
+    private string _letrero = "<ul class='mt-3'></ul>";
+    private List<int> _calificaciones = new();
+
+    private void Guardar()
+    {
+        // _calificaciones.Add(_valorCiclo);
+        // siempre lo agregua al inicio
+        _calificaciones.Insert(0, _valorCiclo);
+    }
+
+    private void Eliminar()
+    {
+        _calificaciones.Remove(_valorCiclo);
+    }
+
+    private void Existe()
+    {
+        _mostrar = _calificaciones.Contains(_valorCiclo);
+        _indice = _calificaciones.IndexOf(_valorCiclo);
+    }
+
+    private void Limpiar()
+    {
+        _calificaciones.Clear();
+    }
+
+    private void Saludar()
+    { 
+        // _indice = 0;
+        // _letrero = "<ul class='mt-3'>";
+        // while (_indice < _valorCiclo) {
+        //     _letrero += $"<li>Valor del cliclo: {_indice}</li>";
+        //     _indice++;
+        // }
+        // _letrero += "</ul>";
+
+        // do
+        // {
+        //     _letrero += $"<li>Valor del cliclo: {_indice}</li>";
+        //     _indice++;
+        // } while (_indice < _valorCiclo);
+
+        // _letrero += "</ul>";
+
+        // var indice sólo tiene tiempo de vida dentro del cliclo for, la d _indice no se usa en este ciclo
+
+        _letrero = "<ul class='mt-3'>";
+        for (var indice = 0; indice < _valorCiclo; indice++)
+        {
+            if (indice == 5) // no se ejecutará cuando valor sea 5
+            {
+                continue; // para saltar la iteración actual, no se ejecuta el código debajo de esta línea y se pasa a la siguiente iteración
+            }
+            _letrero += $"<li>Valor del cliclo: {indice}</li>";
+
+        }
+        _letrero += "</ul>";
+    }
+
+    
+}
