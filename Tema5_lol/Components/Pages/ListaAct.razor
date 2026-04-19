@@ -1,0 +1,63 @@
+﻿@page "/ListaAct"
+@rendermode InteractiveServer
+
+<h3>Lista de Actividades</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <label for="txtAct">Ingresa la actividad:</label>
+        </div>
+        <div class="col-10 mb-3">
+            <input type="text" id="txtAct" class="form-control" @bind="_nuevaAct" />
+        </div>
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Aceptar">Aceptar</button>
+    
+    <div class="row">
+        <div class="col-2">
+            <label for="txtDel">Ingresa la act a eliminar:</label>
+        </div>
+        <div class="col-10 mb-3">
+            <input type="text" id="txtDel" class="form-control" @bind="_actEliminar" />
+        </div>
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Eliminar">Eliminar</button>
+</div>
+
+@if (_actividades.Count > 0)
+{
+    <div class="container">
+        <h2>Actividades</h2>
+        <ol>
+            @foreach(var act in _actividades)
+            {
+                <li>@act</li>
+            }
+        </ol>
+    </div>
+}
+
+@code {
+    private List<string> _actividades = new();
+    private string _nuevaAct = string.Empty;
+    private string _actEliminar = string.Empty;
+
+    private void Aceptar()
+    {
+        if (!string.IsNullOrWhiteSpace(_nuevaAct))
+        {
+            _actividades.Add(_nuevaAct);
+            _nuevaAct = string.Empty;
+        }
+    }
+
+    private void Eliminar()
+    {
+        if(!string.IsNullOrWhiteSpace(_actEliminar))
+        {
+            _actividades.Remove(_actEliminar);
+            _actEliminar = string.Empty;
+        }
+    }
+}
