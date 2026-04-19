@@ -1,0 +1,142 @@
+﻿@page "/ListaCanciones"
+@rendermode InteractiveServer
+
+<h3>Lista de Canciones</h3>
+
+<div class="container">
+    <div class="mb-3">
+        <label for="txtCan">Ingresa el título de la canción a agregar/modificar:</label>
+    </div>
+    <div class="mb-3">
+        <input type="text" id="txtCan" class="form-control" @bind="_nuevaCancion" />
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Agregar">Agregar</button>
+    
+    <div class="mb-3">
+        <label for="txtDel">Ingresa la canción a eliminar:</label>
+    </div>
+    <div class="mb-3">
+        <input type="text" id="txtDel" class="form-control" @bind="_cancionDel" />
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Eliminar">Eliminar</button>
+    
+    <div class="mb-3">
+        <label for="txtMod">Ingresa el nuevo título a colocar:</label>
+    </div>
+    <div class="mb-3">
+        <input type="text" id="txtMod" class="form-control" @bind="_cancionMod" />
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Modificar">Modificar</button>
+
+    <div class="mb-3">
+        <label for="txtFil">Ingresa la palabra para aplicar el filtro:</label>
+    </div>
+    <div class="mb-3">
+        <input type="text" id="txrFil" class="form-control" @bind="_filtro" />
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="Filtrar">Filtrar</button>
+    
+</div>
+
+@if (_canciones.Count > 0 && _mostrar)
+{
+    <div class="container">
+        <h2>Canciones</h2>
+        <ol>
+            @foreach (var can in _canciones)
+            {
+                <li>@can</li>
+            }
+        </ol>
+    </div>
+}
+
+@if (!_mostrar)
+{
+    if (_filtradas.Count > 0)
+    {
+        <div class="container">
+            <h2>Filtrado de canciones</h2>
+            <ol>
+                @foreach (var can in _filtradas)
+                {
+                    <li>@can</li>
+                }
+            </ol>
+        </div>
+    }
+    else
+    {
+        <h2>No se encontraron coincidencias</h2>
+    }
+}
+
+@code {
+    private List<string> _canciones = new();
+    private List<string> _filtradas = new();
+
+    private string _nuevaCancion = string.Empty;
+    private string _cancionDel = string.Empty;
+    private string _cancionMod = string.Empty;
+    private bool _mostrar = true;
+    private string _filtro = string.Empty;
+
+    private void Agregar()
+    {
+        if (!string.IsNullOrWhiteSpace(_nuevaCancion))
+        {
+            _canciones.Add(_nuevaCancion);
+            _nuevaCancion = string.Empty;
+            _mostrar = true;
+        }
+    }
+
+    private void Eliminar()
+    {
+        if (!string.IsNullOrWhiteSpace(_cancionDel))
+        {
+            var item = _canciones.FirstOrDefault(c => c.Equals(_cancionDel, StringComparison.OrdinalIgnoreCase));
+
+            if (item != null)
+            {
+                _canciones.Remove(item);
+            }
+            // _canciones.Remove(_cancionDel);
+            _cancionDel = string.Empty;
+            _mostrar = true;
+        }
+    }
+
+    private void Modificar()
+    {
+        if (!string.IsNullOrWhiteSpace(_cancionMod) && !string.IsNullOrWhiteSpace(_cancionMod))
+        {
+            // int indice = _canciones.IndexOf(_nuevaCancion);
+            int indice = _canciones.FindIndex(c => c.Equals(_nuevaCancion, StringComparison.OrdinalIgnoreCase));
+
+            if (indice != -1)
+            {
+                _canciones[indice] = _cancionMod;
+            }
+
+            _cancionMod = string.Empty;
+            _nuevaCancion = string.Empty;
+            _mostrar = true;
+        }
+    }
+
+    private void Filtrar()
+    {
+        _filtradas.Clear();
+
+        if (!string.IsNullOrWhiteSpace(_filtro))
+        {
+            foreach (var can in _canciones.Where(can => can.Contains(_filtro, StringComparison.OrdinalIgnoreCase)))
+            {
+                _filtradas.Add(can);
+            }
+            _mostrar = false;
+            _filtro = string.Empty;
+        }
+    }
+}
