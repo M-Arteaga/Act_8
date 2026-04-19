@@ -35,6 +35,10 @@
         <input type="text" id="txrFil" class="form-control" @bind="_filtro" />
     </div>
     <button class="btn btn-primary mb-3" @onclick="Filtrar">Filtrar</button>
+    <br />
+
+    <button class="btn btn-secondary me-2 mb-3" @onclick="OrdenarAsc">Ordenar A-Z</button>
+    <button class="btn btn-secondary mb-3" @onclick="OrdenarDesc">Ordenar Z-A</button>
     
 </div>
 
@@ -109,7 +113,7 @@
 
     private void Modificar()
     {
-        if (!string.IsNullOrWhiteSpace(_cancionMod) && !string.IsNullOrWhiteSpace(_cancionMod))
+        if (!string.IsNullOrWhiteSpace(_nuevaCancion) && !string.IsNullOrWhiteSpace(_cancionMod))
         {
             // int indice = _canciones.IndexOf(_nuevaCancion);
             int indice = _canciones.FindIndex(c => c.Equals(_nuevaCancion, StringComparison.OrdinalIgnoreCase));
@@ -137,6 +141,41 @@
             }
             _mostrar = false;
             _filtro = string.Empty;
+        }
+    }
+
+    // private void OrdenarAsc() 
+    // { 
+    //     _canciones = _canciones.OrderBy(c => c).ToList(); 
+    //     _mostrar = true; 
+    // }
+    // private void OrdenarDesc() 
+    // { 
+    //     _canciones = _canciones.OrderByDescending(c => c).ToList(); 
+    //     _mostrar = true; 
+    // }
+
+    private void OrdenarAsc()
+    {
+        if (_mostrar)
+        {
+            _canciones = _canciones.OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
+        }
+        else
+        {
+            _filtradas = _filtradas.OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
+        }
+    }
+
+    private void OrdenarDesc()
+    {
+        if (_mostrar)
+        {
+            _canciones = _canciones.OrderByDescending(c => c, StringComparer.OrdinalIgnoreCase).ToList();
+        }
+        else
+        {
+            _filtradas = _filtradas.OrderByDescending(c => c, StringComparer.OrdinalIgnoreCase).ToList();
         }
     }
 }
